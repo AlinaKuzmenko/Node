@@ -26,31 +26,40 @@
 
 const Koa = require('koa');
 const Router = require('koa-router');
+const bodyParser = require('koa-bodyparser');
 
 const app = new Koa();
 const router = new Router();
 
+app.use(bodyParser());
+
 router
-  .post('/signup', async (ctx) => {
-    let arr = [];
-
-    await new Promise((resolve) => {
-      ctx.req.on('data', (data) => {
-        arr.push(data);
-      });
-
-      ctx.req.on('end', () => {
-        console.log(arr);
-        console.log(JSON.parse(arr));
-        ctx.body = JSON.parse(arr);
-        resolve();
-      })
-    })
-
+  .post('/users', async (ctx) => {
+    // Custom body parser
+    // let arr = [];
+    //
+    // await new Promise((resolve) => {
+    //   ctx.req.on('data', (data) => {
+    //     arr.push(data);
+    //   });
+    //
+    //   ctx.req.on('end', () => {
+    //     console.log(arr);
+    //     console.log(JSON.parse(arr));
+    //     ctx.body = JSON.parse(arr);
+    //     resolve();
+    //   })
+    // })
+    // end of custom body parser
+    ctx.body = ctx.request.body;
+    console.log(' ===>> ', ctx.body);
   });
 
 app
   .use(router.routes())
   .use(router.allowedMethods());
 
+
 app.listen(3000);
+
+
