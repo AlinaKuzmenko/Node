@@ -59,6 +59,24 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
+process.stdin.resume();
+
+process.on('SIGINT', () => {
+  console.log('See you!');
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM. Press Control-Z to exit.');
+});
+
+function handle(signal) {
+  console.log(`Received ${signal}`);
+}
+
+// process.on('SIGINT', handle);
+process.on('SIGTERM', handle);
+
 
 app.listen(3000);
 
