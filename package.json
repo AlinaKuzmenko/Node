@@ -12,7 +12,8 @@
     "express": "^4.17.1",
     "koa": "^2.8.2",
     "koa-bodyparser": "^2.5.0",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.1"

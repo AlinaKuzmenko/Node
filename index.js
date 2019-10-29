@@ -28,36 +28,51 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 
+const greeting = require('./mod');
+const initRoutes = require('./src/routes');
+
 const app = new Koa();
 const router = new Router();
 
 app.use(bodyParser());
 
-router
-  .post('/users', async (ctx) => {
-    // Custom body parser
-    // let arr = [];
-    //
-    // await new Promise((resolve) => {
-    //   ctx.req.on('data', (data) => {
-    //     arr.push(data);
-    //   });
-    //
-    //   ctx.req.on('end', () => {
-    //     console.log(arr);
-    //     console.log(JSON.parse(arr));
-    //     ctx.body = JSON.parse(arr);
-    //     resolve();
-    //   })
-    // })
-    // end of custom body parser
-    ctx.body = ctx.request.body;
-    console.log(' ===>> ', ctx.body);
-  });
+initRoutes(router);
+
+// router
+//   .post('/users', async (ctx, next) => { // контроллер
+//     // Custom body parser
+//     // let arr = [];
+//     //
+//     // await new Promise((resolve) => {
+//     //   ctx.req.on('data', (data) => {
+//     //     arr.push(data);
+//     //   });
+//     //
+//     //   ctx.req.on('end', () => {
+//     //     console.log(arr);
+//     //     console.log(JSON.parse(arr));
+//     //     ctx.body = JSON.parse(arr);
+//     //     resolve();
+//     //   })
+//     // })
+//     // end of custom body parser
+//     ctx.body = ctx.request.body;
+//     ctx.body = greeting(ctx.request.body.name);
+//     console.log(' ===>> ', ctx.body);
+//     next();
+//   })
+//   .get('/', async (ctx) => {
+//     ctx.body = 'HELLO WORLD!!!'
+//   });
 
 app
   .use(router.routes())
-  .use(router.allowedMethods());
+  .use(router.allowedMethods())
+  .use(async (ctx) => {
+    const startTime = Date.now();
+    const requestTime = Date.now() - startTime;
+    console.log('requestTime', requestTime);
+  });
 
 process.stdin.resume();
 
@@ -77,7 +92,4 @@ function handle(signal) {
 // process.on('SIGINT', handle);
 process.on('SIGTERM', handle);
 
-
 app.listen(3000);
-
-
